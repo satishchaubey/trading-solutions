@@ -2,26 +2,34 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { FaChevronUp } from "react-icons/fa";
-import { FiHome, FiUser, FiSettings, FiBell } from "react-icons/fi";
+import { FiHome, FiLogOut } from "react-icons/fi";
+import { useDispatch } from "react-redux";
+import { logout } from "@/store/authSlice";
 
 export default function ResponsiveMenu() {
   const [isMobile, setIsMobile] = useState(false);
   const [isMenuVisible, setIsMenuVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const pathname = usePathname();
+  const router = useRouter();
+  const dispatch = useDispatch();
 
   const menuItems = [
     { href: "/home", label: "Home", icon: <FiHome /> },
-    // { href: "/profile", label: "Profile", icon: <FiUser /> },
-    // { href: "/settings", label: "Settings", icon: <FiSettings /> },
-    // { href: "/notifications", label: "Alerts", icon: <FiBell /> },
   ];
 
   const toggleMenu = () => {
     setIsMenuVisible((prev) => !prev);
+  };
+
+  const handleLogout = () => {
+    // Clear auth tokens or session storage
+    localStorage.removeItem("authUser");
+    dispatch(logout())
+    router.push("/");
   };
 
   // Detect mobile
@@ -83,8 +91,8 @@ export default function ResponsiveMenu() {
                       key={i}
                       href={item.href}
                       className={`flex flex-col items-center p-2 rounded-lg transition-all ${pathname === item.href
-                          ? "text-green-600 bg-green-50"
-                          : "text-gray-600 hover:text-green-600 hover:bg-green-50"
+                        ? "text-green-600 bg-green-50"
+                        : "text-gray-600 hover:text-green-600 hover:bg-green-50"
                         }`}
                     >
                       <motion.div
@@ -97,6 +105,21 @@ export default function ResponsiveMenu() {
                       <span className="text-xs mt-1">{item.label}</span>
                     </Link>
                   ))}
+
+                  {/* Logout Button */}
+                  <button
+                    onClick={handleLogout}
+                    className="flex flex-col items-center p-2 rounded-lg text-gray-600 hover:text-red-600 hover:bg-red-50 transition-all"
+                  >
+                    <motion.div
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="text-xl"
+                    >
+                      <FiLogOut />
+                    </motion.div>
+                    <span className="text-xs mt-1">Logout</span>
+                  </button>
                 </div>
               </motion.div>
             )}
@@ -105,7 +128,9 @@ export default function ResponsiveMenu() {
       ) : (
         // Desktop menu
         <div className="pb-16">
-          <div className="fixed top-0 left-0 right-0 bg-white shadow-sm border-b border-gray-100 p-4 flex justify-center mb-32">
+          <div className="fixed top-0 left-0 right-0 bg-white shadow-sm border-b border-gray-100 p-4 flex justify-between items-center">
+
+            {/* Left: Menu Items */}
             <div className="flex space-x-6">
               {menuItems.map((item, i) => (
                 <Link
@@ -121,8 +146,21 @@ export default function ResponsiveMenu() {
                 </Link>
               ))}
             </div>
+
+            {/* Right: Logout Button */}
+            <div>
+              <button
+                onClick={handleLogout}
+                className="flex items-center space-x-2 px-3 py-2 rounded-lg text-gray-600 hover:text-red-600 hover:bg-red-50 transition-all cursor-pointer"
+              >
+                <FiLogOut />
+                <span>Logout</span>
+              </button>
+            </div>
+
           </div>
         </div>
+
       )}
     </>
   );

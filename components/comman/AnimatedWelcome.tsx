@@ -31,7 +31,7 @@ export default function AnimatedWelcome() {
           transition={{ delay: 0.3, duration: 0.8 }}
           className="text-5xl md:text-7xl font-bold text-white mb-6"
         >
-          Welcome To Demo
+          Trade Smarter. Grow Faster.
         </motion.h1>
 
         {/* Animated Subtitle */}
@@ -41,26 +41,15 @@ export default function AnimatedWelcome() {
           transition={{ delay: 0.6, duration: 0.8 }}
           className="text-xl md:text-2xl text-white/90 mb-8 max-w-2xl"
         >
-          Discover amazing experiences with our platform
+          Welcome to <span className="font-semibold">Trading Solutions</span> — 
+          your all-in-one platform for real-time market data, AI-powered trading analytics, 
+          and secure portfolio management. Whether you trade stocks, forex, or crypto, 
+          we help you stay ahead of the market.
         </motion.p>
-
-        {/* Animated Button */}
-        <motion.button
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          transition={{ delay: 0.9, type: "spring" }}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="px-8 py-3 bg-white text-indigo-600 rounded-full font-semibold shadow-lg"
-        >
-          Get Started
-        </motion.button>
 
         {/* Floating Animated Elements */}
         <motion.div
-          animate={{
-            y: [0, -15, 0],
-          }}
+          animate={{ y: [0, -15, 0] }}
           transition={{
             duration: 4,
             repeat: Infinity,
@@ -69,9 +58,7 @@ export default function AnimatedWelcome() {
           className="absolute bottom-10 left-1/4 w-16 h-16 bg-white/10 rounded-full blur-xl"
         />
         <motion.div
-          animate={{
-            y: [0, 15, 0],
-          }}
+          animate={{ y: [0, 15, 0] }}
           transition={{
             duration: 5,
             repeat: Infinity,

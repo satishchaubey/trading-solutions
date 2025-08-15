@@ -35,11 +35,12 @@ export default function Auth() {
 
   const onRegister = (data: any) => {
     console.log("Register data:", data);
+    debugger
     dispatch(loginSuccess({
       mobile: data.mobile,
       password: data.password,
     }));
-    router.push("/dashboard");
+    router.push("/home");
   };
 
   return (
