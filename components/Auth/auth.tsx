@@ -27,7 +27,7 @@ export default function Auth() {
   const onLogin = (data: any) => {
     console.log("Login data:", data);
     dispatch(loginSuccess({
-      email: data.email,
+      mobile: data.mobile,
       password: data.password,
     }));
     router.push("/home");
@@ -36,7 +36,7 @@ export default function Auth() {
   const onRegister = (data: any) => {
     console.log("Register data:", data);
     dispatch(loginSuccess({
-      email: data.email,
+      mobile: data.mobile,
       password: data.password,
     }));
     router.push("/dashboard");
