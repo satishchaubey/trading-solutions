@@ -1,13 +1,17 @@
 'use client';
 
-import { initializeAuth } from '@/store/authSlice';
+import { initializeAuth } from '@/store/auth';
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import ResponsiveMenu from '@/components/MenuBar/responsive-menu';
-import LoadingSpinner from '@/components/comman/LoadingSpinner';
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
-  const { isAuthenticated, isLoading } = useSelector((state: any) => state.auth);
+  const { isAuthenticated, isLoading } = useSelector((state: any) => ({
+    isAuthenticated: state.auth.isAuthenticated,
+    isLoading: state.auth?.isLoading,
+  }),shallowEqual);
+
+
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
   const dispatch = useDispatch();
 
@@ -18,6 +22,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     }
     setIsCheckingAuth(false);
   }, [isAuthenticated, dispatch]);
+
 
 
 

@@ -4,10 +4,17 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
-import { FaChevronUp } from "react-icons/fa";
+import { FaChevronLeft, FaChevronRight, FaChevronUp, FaSignOutAlt } from "react-icons/fa";
 import { FiHome, FiLogOut } from "react-icons/fi";
+import {
+  FiUsers,
+  FiTrendingUp,
+  FiBookOpen,
+  FiBell,
+  FiUser,
+} from "react-icons/fi";
 import { useDispatch } from "react-redux";
-import { logout } from "@/store/authSlice";
+import { logout } from "@/store/auth";
 
 export default function ResponsiveMenu() {
   const [isMobile, setIsMobile] = useState(false);
@@ -16,9 +23,15 @@ export default function ResponsiveMenu() {
   const pathname = usePathname();
   const router = useRouter();
   const dispatch = useDispatch();
+  const [showLogout, setShowLogout] = useState(false);
 
   const menuItems = [
+    { href: "/team", label: "Team", icon: <FiUsers /> },
+    { href: "/invest", label: "Invest", icon: <FiTrendingUp /> },
+    { href: "/blog", label: "Blog", icon: <FiBookOpen /> },
     { href: "/home", label: "Home", icon: <FiHome /> },
+    { href: "/notice", label: "Notice", icon: <FiBell /> },
+    { href: "/account", label: "Account", icon: <FiUser /> },
   ];
 
   const toggleMenu = () => {
@@ -31,6 +44,7 @@ export default function ResponsiveMenu() {
     dispatch(logout())
     router.push("/");
   };
+
 
   // Detect mobile
   useEffect(() => {
@@ -83,7 +97,7 @@ export default function ResponsiveMenu() {
                 animate={{ y: 0, opacity: 1 }}
                 exit={{ y: 100, opacity: 0 }}
                 transition={{ type: "spring", damping: 20 }}
-                className="fixed bottom-0 left-0 right-0 px-4 pb-4"
+                className="fixed bottom-0 left-0 right-0 px-2 pb-4"
               >
                 <div className="bg-white rounded-xl shadow-lg border border-gray-100 backdrop-blur-sm bg-opacity-80 flex justify-around p-2 max-w-md mx-auto">
                   {menuItems.map((item, i) => (
@@ -105,22 +119,38 @@ export default function ResponsiveMenu() {
                       <span className="text-xs mt-1">{item.label}</span>
                     </Link>
                   ))}
-
-                  {/* Logout Button */}
-                  <button
-                    onClick={handleLogout}
-                    className="flex flex-col items-center p-2 rounded-lg text-gray-600 hover:text-red-600 hover:bg-red-50 transition-all"
-                  >
-                    <motion.div
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="text-xl"
-                    >
-                      <FiLogOut />
-                    </motion.div>
-                    <span className="text-xs mt-1">Logout</span>
-                  </button>
                 </div>
+                <button
+                  onClick={() => setShowLogout((prev) => !prev)}
+                  className="fixed top-1/2 right-0 -translate-y-1/2 bg-white shadow-md  rounded-l-full p-2 z-50 hover:bg-gray-100"
+                >
+                  {showLogout ? <FaChevronRight /> : <FaChevronLeft />}
+                </button>
+                {showLogout && (
+                  <AnimatePresence>
+                    <motion.div
+                      initial={{ x: 100, opacity: 0 }}
+                      animate={{ x: 0, opacity: 1 }}
+                      exit={{ x: 100, opacity: 0 }}
+                      transition={{ type: "spring", stiffness: 200, damping: 20 }}
+                      className="fixed top-1/2 right-0 -translate-y-1/2 bg-white w-24 shadow-lg  flex justify-center items-center rounded-l-xl z-40"
+                    >
+                      <button
+                        onClick={handleLogout}
+                        className="flex flex-col items-center p-2 rounded-lg text-gray-600 hover:text-red-600 hover:bg-red-50 transition-all"
+                      >
+                        <motion.div
+                          whileHover={{ scale: 1.1 }}
+                          whileTap={{ scale: 0.95 }}
+                          className="text-xl"
+                        >
+                          <FaSignOutAlt size={18} />
+                        </motion.div>
+                        <span className="text-xs mt-1">Logout</span>
+                      </button>
+                    </motion.div>
+                  </AnimatePresence>
+                )}
               </motion.div>
             )}
           </AnimatePresence>
@@ -137,8 +167,8 @@ export default function ResponsiveMenu() {
                   key={i}
                   href={item.href}
                   className={`flex items-center space-x-2 px-3 py-2 rounded-lg transition-all ${pathname === item.href
-                      ? "text-green-600 bg-green-50"
-                      : "text-gray-600 hover:text-green-600 hover:bg-green-50"
+                    ? "text-green-600 bg-green-50"
+                    : "text-gray-600 hover:text-green-600 hover:bg-green-50"
                     }`}
                 >
                   {item.icon}
@@ -162,6 +192,28 @@ export default function ResponsiveMenu() {
         </div>
 
       )}
+
+      <motion.button
+        // onClick={handleClick}
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+        initial={{ y: 0 }}
+        animate={{ y: [0, -8, 0] }} // bounce up & down
+        transition={{
+          duration: 2,
+          repeat: Infinity,
+          repeatType: "loop",
+          ease: "easeInOut",
+        }}
+        className={`fixed bottom-30 right-3 text-white p-4 rounded-full focus:outline-none
+          bg-blue-600
+          ${isMobile
+            ? 'shadow-[0_4px_24px_0_rgba(59,130,246,0.25)] hover:shadow-[0_8px_32px_0_rgba(59,130,246,0.35)]'
+            : 'shadow-[0_8px_32px_0_rgba(59,130,246,0.18)] hover:shadow-[0_12px_40px_0_rgba(59,130,246,0.22)]'}
+          hover:bg-blue-700`}
+      >
+        <FiUser size={isMobile ? 20 : 30} />
+      </motion.button>
     </>
   );
 }

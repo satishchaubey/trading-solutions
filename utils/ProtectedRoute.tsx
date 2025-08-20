@@ -3,7 +3,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import LoadingSpinner from '@/components/comman/LoadingSpinner'; // Adjust path as needed
-import { initializeAuth } from '@/store/authSlice';
+import { initializeAuth } from '@/store/auth';
 
 export function withAuth(Component: React.ComponentType) {
   return function ProtectedRoute(props: any) {

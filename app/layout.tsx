@@ -65,7 +65,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${roboto.variable} font-sans antialiased`}>
+      <body className={`${roboto.variable} font-sans antialiased min-h-screen bg-yellow-300 `} suppressHydrationWarning>
         <ProviderStore>
           <Layout>
             {children}

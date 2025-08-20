@@ -1,43 +1,12 @@
-// store/authSlice.ts
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-interface User {
-  mobile: string;
-  password: string;
-  invitationCode?: string;
-}
-
-interface AuthState {
-  isAuthenticated: boolean;
-  isLoading: boolean;
-  user: User | null;
-  error: string | null;
-}
-
-// Secure storage functions
-const storage = {
-  get: (): User | null => {
-    if (typeof window === 'undefined') return null;
-    try {
-      const data = localStorage.getItem('authUser');
-      return data ? JSON.parse(data) : null;
-    } catch {
-      return null;
-    }
-  },
-  set: (user: User) => {
-    localStorage.setItem('authUser', JSON.stringify(user));
-  },
-  clear: () => {
-    localStorage.removeItem('authUser');
-  }
-};
+import { AuthState, User } from "./types";
+import { storage } from "./storage";
 
 const initialState: AuthState = {
   isAuthenticated: false,
-  isLoading: true,
+  isLoading: false,
   user: null,
-  error: null
+  error: null,
 };
 
 const authSlice = createSlice({
@@ -45,9 +14,9 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     loginSuccess(state, action: PayloadAction<{ mobile: string; password: string }>) {
-      const user = {
+      const user: User = {
         mobile: action.payload.mobile,
-        password: action.payload.password
+        password: action.payload.password,
       };
       state.isAuthenticated = true;
       state.isLoading = false;
@@ -58,16 +27,12 @@ const authSlice = createSlice({
 
     registerSuccess(
       state,
-      action: PayloadAction<{
-        mobile: string;
-        password: string;
-        invitationCode: string;
-      }>
+      action: PayloadAction<{ mobile: string; password: string; invitationCode: string }>
     ) {
-      const user = {
+      const user: User = {
         mobile: action.payload.mobile,
         password: action.payload.password,
-        invitationCode: action.payload.invitationCode
+        invitationCode: action.payload.invitationCode,
       };
       state.isAuthenticated = true;
       state.isLoading = false;
@@ -79,6 +44,7 @@ const authSlice = createSlice({
     logout(state) {
       state.isAuthenticated = false;
       state.user = null;
+      state.isLoading = false;
       state.error = null;
       storage.clear();
     },
@@ -104,10 +70,10 @@ const authSlice = createSlice({
       state,
       action: PayloadAction<{ code: string; validCodes: string[] }>
     ) {
-      state.error = action.payload.validCodes.includes(action.payload.code) 
-        ? null 
+      state.error = action.payload.validCodes.includes(action.payload.code)
+        ? null
         : "Invalid invitation code";
-    }
+    },
   },
 });
 
@@ -118,7 +84,7 @@ export const {
   setLoading,
   setError,
   initializeAuth,
-  validateInvitationCode
+  validateInvitationCode,
 } = authSlice.actions;
 
 export default authSlice.reducer;
