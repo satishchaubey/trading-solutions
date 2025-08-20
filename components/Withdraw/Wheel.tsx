@@ -54,14 +54,14 @@ export const Wheel = () => {
   return (
     <div className="flex flex-col items-center space-y-6 p-8  justify-center" suppressHydrationWarning>
       {/* Background decorative elements */}
-      <div className="absolute inset-0 overflow-hidden">
+      <div className="absolute inset-0 overflow-hidden ">
         <div className="absolute -top-20 -left-20 w-96 h-96 bg-gradient-to-r from-pink-500/10 to-purple-500/10 rounded-full blur-3xl"></div>
         <div className="absolute -bottom-20 -right-20 w-96 h-96 bg-gradient-to-l from-blue-500/10 to-cyan-500/10 rounded-full blur-3xl"></div>
         <div className="absolute top-1/2 left-1/4 w-64 h-64 bg-gradient-to-br from-yellow-500/5 to-orange-500/5 rounded-full blur-3xl"></div>
       </div>
 
       {/* Wheel Container */}
-      <div className="relative z-10">
+      <div className="relative">
         {/* Wheel Pointer */}
         <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-2 z-20">
           <div className="w-0 h-0 border-l-8 border-r-8 border-b-12 border-l-transparent border-r-transparent border-b-yellow-400 drop-shadow-lg"></div>
