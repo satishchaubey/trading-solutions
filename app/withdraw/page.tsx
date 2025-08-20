@@ -1,9 +1,17 @@
 "use client";
 
+import { WinningTable } from "@/components/comman/Table";
 import { Wheel } from "@/components/Withdraw/Wheel";
 import { motion } from "framer-motion";
 
 export default function WithdrawPage() {
+
+
+  const userWinningData = [
+    { id: 1, prize: "Bonus 9", date: "2025-08-19" },
+    { id: 2, prize: "Bonus 15", date: "2025-08-20" },
+  ];
+
   return (
     <div className="min-h-screen bg-yellow-200 flex flex-col items-center py-6">
       {/* Header */}
@@ -19,7 +27,7 @@ export default function WithdrawPage() {
       </div>
 
       {/* Wheel Section */}
-      <div className="mt-10">
+      <div className="mt-10 w-full max-w-2xl bg-yellow-200 rounded-lg shadow-lg p-6">
         <Wheel />
       </div>
 
@@ -31,6 +39,9 @@ export default function WithdrawPage() {
       >
         winning record
       </motion.div>
+      <div className=" min-w-full">
+        <WinningTable records={userWinningData} />
+      </div>
     </div>
   );
 }
